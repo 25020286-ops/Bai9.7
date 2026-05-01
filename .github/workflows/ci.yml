@@ -1,0 +1,33 @@
+name: Automated Code Review
+
+on:
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-review:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: read
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Java 25
+        uses: actions/setup-java@v4
+        with:
+          java-version: '25'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Run Unit Tests
+        run: mvn test
+
+      - name: Static Code Analysis
+        uses: dbelyaev/action-checkstyle@master
+        if: always()
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          level: error
