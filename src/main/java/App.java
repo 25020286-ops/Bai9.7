@@ -1,6 +1,6 @@
 public class App {
     public String sayHello() {
-        //Testbotnew
+        //Testbot
         return "Hello World";
     }
 }
